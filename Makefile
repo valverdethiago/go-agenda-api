@@ -7,7 +7,10 @@ dev-stop:
 test:
 	go test -v -cover ./...
 
+mockgen:
+	mockgen -package mockdb -destination contact/mock/mockstore.go github.com/valverde.thiago/go-agenda-api/contact Store
+
 server:
 	go run main.go
 
-.PHONY: dev-start dev-stop test server
+.PHONY: dev-start dev-stop test server mockgen

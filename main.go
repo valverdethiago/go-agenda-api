@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/go-agenda-api/api"
-	"github.com/go-agenda-api/util"
+	"github.com/valverde.thiago/go-agenda-api/api"
+	"github.com/valverde.thiago/go-agenda-api/util"
 	mgo "gopkg.in/mgo.v2"
 )
 

@@ -1,4 +1,4 @@
-module github.com/go-agenda-api
+module github.com/valverde.thiago/go-agenda-api
 
 go 1.15
 

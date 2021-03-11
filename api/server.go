@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gopkg.in/mgo.v2"
 
-	contact "github.com/go-agenda-api/contact"
+	contact "github.com/valverde.thiago/go-agenda-api/contact"
 )
 
 // Server server
