@@ -17,6 +17,7 @@ type Store interface {
 	Create(contact Contact) (Contact, error)
 	Update(contact Contact) error
 	Delete(ID string) error
+	ClearDatabase() error
 }
 
 // MongoDbStore  contact store implementaion for mongodb
@@ -67,6 +68,7 @@ func (store *MongoDbStore) FindByName(name string) ([]Contact, error) {
 
 // Create creates a new contact
 func (store *MongoDbStore) Create(contact Contact) (Contact, error) {
+	contact.ID = bson.NewObjectId()
 	err := store.collection.Insert(&contact)
 	return contact, err
 }
@@ -79,6 +81,11 @@ func (store *MongoDbStore) Delete(id string) error {
 
 // Update updates contact
 func (store *MongoDbStore) Update(contact Contact) error {
-	err := store.collection.UpdateId(bson.ObjectIdHex(string(contact.ID)), &contact)
+	id := bson.ObjectIdHex(contact.ID.Hex())
+	err := store.collection.UpdateId(id, &contact)
 	return err
+}
+
+func (store *MongoDbStore) ClearDatabase() error {
+	return store.collection.DropCollection()
 }

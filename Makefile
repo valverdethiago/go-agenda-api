@@ -4,13 +4,19 @@ dev-start:
 dev-stop:
 	docker-compose -f ./docker/docker-compose.yml  --env-file ./docker/.env down 
 
-test:
+tests:
 	go test -v -cover ./...
 
+unit-tests:
+	go test --tags=unit ./...
+
+e2e:
+	go test --tags=integration ./...
+
 mockgen:
-	mockgen -package mockdb -destination contact/mock/mockstore.go github.com/valverde.thiago/go-agenda-api/contact Store
+	mockgen -package contact -destination contact/mockstore.go github.com/valverde.thiago/go-agenda-api/contact Store
 
 server:
 	go run main.go
 
-.PHONY: dev-start dev-stop test server mockgen
+.PHONY: dev-start dev-stop tests unit-tests e2e server mockgen
