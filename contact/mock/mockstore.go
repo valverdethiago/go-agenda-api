@@ -34,6 +34,20 @@ func (m *MockStore) EXPECT() *MockStoreMockRecorder {
 	return m.recorder
 }
 
+// ClearDatabase mocks base method.
+func (m *MockStore) ClearDatabase() error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ClearDatabase")
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ClearDatabase indicates an expected call of ClearDatabase.
+func (mr *MockStoreMockRecorder) ClearDatabase() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ClearDatabase", reflect.TypeOf((*MockStore)(nil).ClearDatabase))
+}
+
 // Create mocks base method.
 func (m *MockStore) Create(arg0 contact.Contact) (contact.Contact, error) {
 	m.ctrl.T.Helper()
