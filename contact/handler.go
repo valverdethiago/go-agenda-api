@@ -30,15 +30,14 @@ type Controller struct {
 }
 
 // NewController builds a new instance of contact controller
-func NewController(store Store, router *gin.Engine) *Controller {
-	controller := &Controller{
+func NewController(store Store) *Controller {
+	return &Controller{
 		store: store,
 	}
-	controller.setupRoutes(router)
-	return controller
 }
 
-func (controller *Controller) setupRoutes(router *gin.Engine) {
+// SetupRoutes setup routes for this controller
+func (controller *Controller) SetupRoutes(router *gin.Engine) {
 	basicRoute := router.Group(contactsBasePath)
 	basicRoute.GET("", controller.search)
 	basicRoute.POST("", controller.createContact)

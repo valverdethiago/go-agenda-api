@@ -1,8 +1,8 @@
 dev-start:
-	docker-compose -f ./docker/docker-compose.yml --env-file ./docker/.env up -d 
+	docker-compose -f ./docker/docker-compose.yml  up -d 
 
 dev-stop:
-	docker-compose -f ./docker/docker-compose.yml  --env-file ./docker/.env down 
+	docker-compose -f ./docker/docker-compose.yml  down 
 
 tests:
 	go test -v -cover ./...

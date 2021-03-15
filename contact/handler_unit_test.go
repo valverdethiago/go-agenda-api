@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 	"github.com/valverde.thiago/go-agenda-api/util"
@@ -358,7 +359,7 @@ func run(t *testing.T, testCases []testCase, method string) {
 			//build stubs
 			testCase.buildStubs(mockStore)
 			// start http server and send the request
-			server := NewServer(mockStore)
+			server := NewServer(mockStore, gin.Default(), testConfig)
 			recorder := httptest.NewRecorder()
 			requestObject := testCase.buildRequest()
 			var request *http.Request

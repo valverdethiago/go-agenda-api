@@ -2,6 +2,8 @@ package contact
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/valverde.thiago/go-agenda-api/metrics"
+	"github.com/valverde.thiago/go-agenda-api/util"
 )
 
 // Server server
@@ -11,12 +13,15 @@ type Server struct {
 }
 
 // NewServer creates a new server instance
-func NewServer(store Store) *Server {
+func NewServer(store Store, router *gin.Engine, config util.Config) *Server {
 	server := &Server{
 		store:  store,
-		router: gin.Default(),
+		router: router,
 	}
-	NewController(store, server.router)
+	contactController := NewController(store)
+	contactController.SetupRoutes(server.router)
+	metricsController := metrics.NewController()
+	metricsController.SetupRoutes(server.router)
 	return server
 }
 
