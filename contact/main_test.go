@@ -3,6 +3,7 @@ package contact
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"testing"
@@ -20,9 +21,10 @@ var testDatabase *mgo.Database
 
 var it = beforeEach.Create(setUp, tearDown)
 var expectedContact = Contact{
-	ID:    bson.NewObjectId(),
-	Name:  util.RandomName(),
-	Email: util.RandomEmail(),
+	ID:     bson.NewObjectId(),
+	Name:   util.RandomName(),
+	Email:  util.RandomEmail(),
+	Active: true,
 }
 
 func TestMain(m *testing.M) {
@@ -39,13 +41,18 @@ func setUp() {
 func tearDown() {
 	testDbStore.ClearDatabase()
 }
-func requireBodyMatchContact(t *testing.T, body *bytes.Buffer, contact Contact) {
+
+func readContactFromResponseBody(t *testing.T, body *bytes.Buffer) Contact {
 	data, err := ioutil.ReadAll(body)
 	require.NoError(t, err)
 
 	var bodyContact Contact
 	err = json.Unmarshal(data, &bodyContact)
-	require.NoError(t, err)
+	return bodyContact
+}
+
+func requireBodyMatchContact(t *testing.T, body *bytes.Buffer, contact Contact) {
+	bodyContact := readContactFromResponseBody(t, body)
 	require.Equal(t, contact, bodyContact)
 }
 
@@ -77,9 +84,9 @@ func sendObjectAsRequestBody(t *testing.T, obj interface{}) *bytes.Buffer {
 	return bytes.NewBuffer(b)
 }
 
-func createRandomContact(t *testing.T, persistData bool) Contact {
+func createRandomContact(t *testing.T, name string, persistData bool) Contact {
 	arg := Contact{
-		Name:   util.RandomName(),
+		Name:   fmt.Sprintf("%s %s %s", util.RandomName(), name, util.RandomName()),
 		Email:  util.RandomEmail(),
 		Active: true,
 	}
@@ -104,10 +111,10 @@ func createRandomContact(t *testing.T, persistData bool) Contact {
 	return contact
 }
 
-func createRandomContactList(t *testing.T, size int, persistData bool) []Contact {
+func createRandomContactList(t *testing.T, name string, size int, persistData bool) []Contact {
 	result := make([]Contact, size)
 	for i := range result {
-		result[i] = createRandomContact(t, persistData)
+		result[i] = createRandomContact(t, name, persistData)
 	}
 	return result
 }

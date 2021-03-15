@@ -26,8 +26,9 @@ func buildEmptyRequest() interface{} {
 
 func buildDefaultContactRequest() interface{} {
 	return contactRequest{
-		Name:  expectedContact.Name,
-		Email: expectedContact.Email,
+		Name:   expectedContact.Name,
+		Email:  expectedContact.Email,
+		Active: true,
 	}
 }
 
@@ -79,7 +80,7 @@ func TestCreateContactEnpoint(t *testing.T) {
 }
 func TestListContactsEnpoint(t *testing.T) {
 	path := "/contacts"
-	contactList := createRandomContactList(t, 10, false)
+	contactList := createRandomContactList(t, util.RandomName(), 10, false)
 	testCases := []testCase{
 		{
 			name:         "OK",
@@ -130,7 +131,7 @@ func TestListContactsEnpoint(t *testing.T) {
 func TestSearchContactsEnpoint(t *testing.T) {
 	searchTerm := util.RandomName()
 	path := fmt.Sprintf("/contacts?term=%s", searchTerm)
-	contactList := createRandomContactList(t, 10, false)
+	contactList := createRandomContactList(t, util.RandomName(), 10, false)
 	testCases := []testCase{
 		{
 			name:         "OK",
@@ -180,7 +181,7 @@ func TestSearchContactsEnpoint(t *testing.T) {
 }
 
 func TestGetContactEndpoint(t *testing.T) {
-	contact := createRandomContact(t, false)
+	contact := createRandomContact(t, util.RandomName(), false)
 	path := fmt.Sprintf("/contacts/%s", contact.ID.Hex())
 
 	testCases := []testCase{

@@ -20,13 +20,13 @@ func assertSearchResult(t *testing.T, originalContact Contact, contactList []Con
 
 func TestCreateContact(t *testing.T) {
 	it(func() {
-		createRandomContact(t, true)
+		createRandomContact(t, util.RandomName(), true)
 	})
 }
 
 func TestGetContact(t *testing.T) {
 	it(func() {
-		contact := createRandomContact(t, true)
+		contact := createRandomContact(t, util.RandomName(), true)
 		dbContact, err := testDbStore.FindByID(contact.ID.Hex())
 		require.NoError(t, err)
 		require.NotEmpty(t, dbContact)
@@ -38,7 +38,7 @@ func TestGetContact(t *testing.T) {
 }
 func TestUpdateContact(t *testing.T) {
 	it(func() {
-		contact := createRandomContact(t, true)
+		contact := createRandomContact(t, util.RandomName(), true)
 		arg := Contact{
 			ID:     contact.ID,
 			Name:   util.RandomName(),
@@ -58,7 +58,7 @@ func TestUpdateContact(t *testing.T) {
 }
 func TestDeleteteContact(t *testing.T) {
 	it(func() {
-		contact := createRandomContact(t, true)
+		contact := createRandomContact(t, util.RandomName(), true)
 		err := testDbStore.Delete(contact.ID.Hex())
 		require.NoError(t, err)
 		dbContact, err := testDbStore.FindByID(contact.ID.Hex())
@@ -70,7 +70,7 @@ func TestDeleteteContact(t *testing.T) {
 func TestGetAll(t *testing.T) {
 	it(func() {
 		size := 10
-		createRandomContactList(t, size, true)
+		createRandomContactList(t, util.RandomName(), size, true)
 		dbContacts, err := testDbStore.GetAll()
 		require.NoError(t, err)
 		require.NotEmpty(t, dbContacts)
@@ -83,7 +83,7 @@ func TestFindByName(t *testing.T) {
 		firstName := util.RandomName()
 		lastName := util.RandomName()
 		name := fmt.Sprintf("%s %s", firstName, lastName)
-		contact := createRandomContact(t, true)
+		contact := createRandomContact(t, util.RandomName(), true)
 		contact.Name = name
 		err := testDbStore.Update(contact)
 		require.NoError(t, err)

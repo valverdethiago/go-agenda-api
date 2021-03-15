@@ -19,8 +19,9 @@ type contactSearchRequest struct {
 	searchTerm string `uri:"term"`
 }
 type contactRequest struct {
-	Name  string `json:"name" binding:"required"`
-	Email string `json:"email" binding:"required,email"`
+	Name   string `json:"name" binding:"required"`
+	Email  string `json:"email" binding:"required,email"`
+	Active bool   `json:"active" binding:"required"`
 }
 
 // Controller type for handling contact API requests
@@ -85,9 +86,10 @@ func (controller *Controller) updateContact(ctx *gin.Context) {
 		return
 	}
 	arg := Contact{
-		ID:    contact.ID,
-		Name:  req.Name,
-		Email: req.Email,
+		ID:     contact.ID,
+		Name:   req.Name,
+		Email:  req.Email,
+		Active: req.Active,
 	}
 	err = controller.store.Update(arg)
 	if err != nil {
