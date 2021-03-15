@@ -18,6 +18,7 @@ services:
       image: mongo-express
       container_name: mongo-express
       hostname: mongo-express
+      restart: unless-stopped
       ports:
           - "8888:8081"
       links:
