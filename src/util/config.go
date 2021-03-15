@@ -1,6 +1,10 @@
 package util
 
-import "github.com/spf13/viper"
+import (
+	"fmt"
+
+	"github.com/spf13/viper"
+)
 
 type Config struct {
 	DBServer          string `mapstructure:"DB_SERVER"`
@@ -11,7 +15,8 @@ type Config struct {
 
 func LoadConfig(path string, env string) (Config, error) {
 	var config Config
-	viper.AddConfigPath(path + "/env")
+	configPath := fmt.Sprintf("../%s/env", path)
+	viper.AddConfigPath(configPath)
 	viper.SetConfigName(env)
 	viper.SetConfigType("env")
 	viper.AutomaticEnv()
