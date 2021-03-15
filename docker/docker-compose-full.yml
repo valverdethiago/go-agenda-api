@@ -77,13 +77,13 @@ services:
     build: 
       context: ../
       dockerfile: ./docker/Dockerfile
-    ports:
-      - 8081:8081
-    environment: 
-      DB_SERVER: localhost
+    environment:  
+      DB_SERVER: mongo
       DB_NAME: agenda
       SERVER_ADDRESS: 0.0.0.0:8081
       PROMETHEUS_SERVER: http://prometheus:9090/
+    ports:
+      - 8081:8081
     links:
       - mongo
       - prometheus
