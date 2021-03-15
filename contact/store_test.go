@@ -9,30 +9,6 @@ import (
 	"gopkg.in/mgo.v2"
 )
 
-func createRandomContact(t *testing.T) Contact {
-	arg := Contact{
-		Name:   util.RandomName(),
-		Email:  util.RandomEmail(),
-		Active: true,
-	}
-	contact, err := testDbStore.Create(arg)
-	require.NoError(t, err)
-	require.NotEmpty(t, contact)
-	require.NotNil(t, contact.ID)
-	require.Equal(t, arg.Name, contact.Name)
-	require.Equal(t, arg.Email, contact.Email)
-	require.Equal(t, arg.Active, contact.Active)
-	return contact
-}
-
-func createRandomContactList(t *testing.T, size int) []Contact {
-	result := make([]Contact, size)
-	for i := range result {
-		result[i] = createRandomContact(t)
-	}
-	return result
-}
-
 func assertSearchResult(t *testing.T, originalContact Contact, contactList []Contact) {
 	require.NotEmpty(t, contactList)
 	require.Equal(t, len(contactList), 1)
@@ -44,13 +20,13 @@ func assertSearchResult(t *testing.T, originalContact Contact, contactList []Con
 
 func TestCreateContact(t *testing.T) {
 	it(func() {
-		createRandomContact(t)
+		createRandomContact(t, true)
 	})
 }
 
 func TestGetContact(t *testing.T) {
 	it(func() {
-		contact := createRandomContact(t)
+		contact := createRandomContact(t, true)
 		dbContact, err := testDbStore.FindByID(contact.ID.Hex())
 		require.NoError(t, err)
 		require.NotEmpty(t, dbContact)
@@ -62,7 +38,7 @@ func TestGetContact(t *testing.T) {
 }
 func TestUpdateContact(t *testing.T) {
 	it(func() {
-		contact := createRandomContact(t)
+		contact := createRandomContact(t, true)
 		arg := Contact{
 			ID:     contact.ID,
 			Name:   util.RandomName(),
@@ -82,7 +58,7 @@ func TestUpdateContact(t *testing.T) {
 }
 func TestDeleteteContact(t *testing.T) {
 	it(func() {
-		contact := createRandomContact(t)
+		contact := createRandomContact(t, true)
 		err := testDbStore.Delete(contact.ID.Hex())
 		require.NoError(t, err)
 		dbContact, err := testDbStore.FindByID(contact.ID.Hex())
@@ -94,7 +70,7 @@ func TestDeleteteContact(t *testing.T) {
 func TestGetAll(t *testing.T) {
 	it(func() {
 		size := 10
-		createRandomContactList(t, size)
+		createRandomContactList(t, size, true)
 		dbContacts, err := testDbStore.GetAll()
 		require.NoError(t, err)
 		require.NotEmpty(t, dbContacts)
@@ -107,7 +83,7 @@ func TestFindByName(t *testing.T) {
 		firstName := util.RandomName()
 		lastName := util.RandomName()
 		name := fmt.Sprintf("%s %s", firstName, lastName)
-		contact := createRandomContact(t)
+		contact := createRandomContact(t, true)
 		contact.Name = name
 		err := testDbStore.Update(contact)
 		require.NoError(t, err)

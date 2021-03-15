@@ -62,7 +62,7 @@ func (controller *Controller) createContact(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
-	ctx.JSON(http.StatusAccepted, contact)
+	ctx.JSON(http.StatusCreated, contact)
 	return
 }
 
@@ -94,7 +94,7 @@ func (controller *Controller) updateContact(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
-	ctx.JSON(http.StatusAccepted, arg)
+	ctx.JSON(http.StatusOK, arg)
 }
 
 func (controller *Controller) deleteContact(ctx *gin.Context) {
@@ -121,7 +121,7 @@ func (controller *Controller) search(ctx *gin.Context) {
 	}
 	if err != nil {
 		if err == mgo.ErrNotFound {
-			ctx.JSON(http.StatusNotFound, gin.H{"message": "No contact found for the given search term"})
+			ctx.JSON(http.StatusNoContent, gin.H{"message": "No contact found for the given search term"})
 		} else {
 			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		}
