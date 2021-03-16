@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/valverde.thiago/go-agenda-api/metrics"
 	"github.com/valverde.thiago/go-agenda-api/util"
 )
 
@@ -25,8 +24,6 @@ func NewServer(store Store, router *gin.Engine, config *util.Config) *Server {
 	}
 	contactController := NewController(store)
 	contactController.SetupRoutes(server.router)
-	metricsController := metrics.NewController()
-	metricsController.SetupRoutes(server.router)
 	return server
 }
 

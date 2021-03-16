@@ -9,7 +9,7 @@ import (
 
 const (
 	contactsBasePath = "/contacts"
-	contactsPathByID = "/:id"
+	contactsPathByID = "/contacts/:id"
 )
 
 type contactIdRequest struct {
@@ -38,13 +38,11 @@ func NewController(store Store) *Controller {
 
 // SetupRoutes setup routes for this controller
 func (controller *Controller) SetupRoutes(router *gin.Engine) {
-	basicRoute := router.Group(contactsBasePath)
-	basicRoute.GET("", controller.search)
-	basicRoute.POST("", controller.createContact)
-	basicRoute.GET("/:id", controller.getContactByID)
-	basicRoute.PUT("/:id", controller.updateContact)
-	basicRoute.DELETE("/:id", controller.deleteContact)
-
+	router.GET(contactsBasePath, controller.search)
+	router.POST(contactsBasePath, controller.createContact)
+	router.GET(contactsPathByID, controller.getContactByID)
+	router.PUT(contactsPathByID, controller.updateContact)
+	router.DELETE(contactsPathByID, controller.deleteContact)
 }
 
 func (controller *Controller) createContact(ctx *gin.Context) {
