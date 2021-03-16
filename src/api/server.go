@@ -1,30 +1,45 @@
-package contact
+package api
 
 import (
+	"flag"
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang/glog"
+	ginglog "github.com/szuecs/gin-glog"
+	"github.com/valverde.thiago/go-agenda-api/contact"
 	"github.com/valverde.thiago/go-agenda-api/util"
 )
 
 // Server server
 type Server struct {
-	store  Store
+	store  contact.Store
 	router *gin.Engine
 	config *util.Config
 }
 
 // NewServer creates a new server instance
-func NewServer(store Store, router *gin.Engine, config *util.Config) *Server {
+func NewServer(store contact.Store, router *gin.Engine, config *util.Config) *Server {
 	server := &Server{
 		store:  store,
 		router: router,
 		config: config,
 	}
-	contactController := NewController(store)
+	contactController := contact.NewController(store)
 	contactController.SetupRoutes(server.router)
+	server.ConfigureLogging()
 	return server
+}
+
+// ConfigureLogging configure gin logs
+func (server *Server) ConfigureLogging() {
+	flag.Parse()
+	server.router.Use(ginglog.Logger(3 * time.Second))
+	server.router.Use(gin.Recovery())
+	glog.Warning("warning")
+	glog.Error("err")
+	glog.Info("info")
 }
 
 // Start runs the HTTP Server on a specific address
