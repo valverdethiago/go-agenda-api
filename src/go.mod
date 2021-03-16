@@ -8,5 +8,6 @@ require (
 	github.com/jknair0/beforeeach v0.0.1
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.4.0
+	github.com/zsais/go-gin-prometheus v0.1.0 // indirect
 	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22
 )
