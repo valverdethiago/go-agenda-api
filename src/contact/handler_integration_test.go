@@ -43,7 +43,7 @@ func TestCreateContactIntegrationEnpoint(t *testing.T) {
 		t.Run(testCase.name, func(t *testing.T) {
 			it(func() {
 				// start http server and send the request
-				server := NewServer(testDbStore, gin.Default(), testConfig)
+				server := NewServer(testDbStore, gin.Default(), &testConfig)
 				recorder := httptest.NewRecorder()
 				requestObject := testCase.buildRequest()
 				request, err := http.NewRequest(http.MethodPost, path,
@@ -92,7 +92,7 @@ func TestListContactsIntegrationEnpoint(t *testing.T) {
 				//build seeds
 				testCase.buildSeed(testDbStore)
 				// start http server and send the request
-				server := NewServer(testDbStore, gin.Default(), testConfig)
+				server := NewServer(testDbStore, gin.Default(), &testConfig)
 				recorder := httptest.NewRecorder()
 				request, err := http.NewRequest(http.MethodGet, path, nil)
 				require.NoError(t, err)
@@ -141,7 +141,7 @@ func TestSearchContactsIntegrationEnpoint(t *testing.T) {
 				//build seeds
 				testCase.buildSeed(testDbStore)
 				// start http server and send the request
-				server := NewServer(testDbStore, gin.Default(), testConfig)
+				server := NewServer(testDbStore, gin.Default(), &testConfig)
 				recorder := httptest.NewRecorder()
 				request, err := http.NewRequest(http.MethodGet, path, nil)
 				require.NoError(t, err)
@@ -189,7 +189,7 @@ func TestGetContactIntegrationEndpoint(t *testing.T) {
 				//build seeds
 				path := testCase.buildSeed(testDbStore)
 				// start http server and send the request
-				server := NewServer(testDbStore, gin.Default(), testConfig)
+				server := NewServer(testDbStore, gin.Default(), &testConfig)
 				recorder := httptest.NewRecorder()
 				request, err := http.NewRequest(http.MethodGet, path, nil)
 				require.NoError(t, err)
@@ -250,7 +250,7 @@ func TestUpdateContactIntegrationEnpoint(t *testing.T) {
 				//build seeds
 				path := testCase.buildSeed(testDbStore)
 				// start http server and send the request
-				server := NewServer(testDbStore, gin.Default(), testConfig)
+				server := NewServer(testDbStore, gin.Default(), &testConfig)
 				recorder := httptest.NewRecorder()
 				request, err := http.NewRequest(http.MethodPut,
 					path, sendObjectAsRequestBody(t, testCase.buildRequest()))
@@ -299,7 +299,7 @@ func TestDeleteContactIntegrationEnpoint(t *testing.T) {
 				//build seeds
 				path := testCase.buildSeed()
 				// start http server and send the request
-				server := NewServer(testDbStore, gin.Default(), testConfig)
+				server := NewServer(testDbStore, gin.Default(), &testConfig)
 				recorder := httptest.NewRecorder()
 				request, err := http.NewRequest(http.MethodDelete,
 					path, nil)
