@@ -4,6 +4,12 @@ dev-start:
 dev-stop:
 	docker-compose -f ./docker/docker-compose.yml  down 
 
+stack-start:
+	docker-compose -f ./docker/docker-compose-full.yml  up -d --force-recreate --build backend
+
+stack-stop:
+	docker-compose -f ./docker/docker-compose-full.yml  down 
+
 tests:
 	cd src;\
 	go test -v -cover ./...
@@ -19,4 +25,4 @@ server:
 build:
 	go build -o ./docker/bin/agenda
 
-.PHONY: dev-start dev-stop tests unit-tests e2e server mockgen
+.PHONY: dev-start dev-stop stack-start stack-stop tests unit-tests e2e server mockgen
