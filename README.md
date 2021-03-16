@@ -30,7 +30,7 @@ In order to facilitate running the processes locally a makefile with some tasks 
 * make dev-stop: stops the local development containter, needed if you want to use the full stack
 * make stack-start: starts all the basic infrastrucute containers and the backend app
 * make stack-stop: stops the full stack
-* make tests: runs the tests with coverage report (actually 93.7%)
+* make tests: runs the tests with coverage report (actually 90.9%)
 * make mockgen: generates mock for the Store interface to mock database calls
 * make server: starts the application (make dev-start is required to run this task)
 
@@ -53,3 +53,21 @@ Basic configuration for the application can be found in env folder but it can be
 5. [prometheus/client_golang](https://github.com/prometheus/client_golang) - Supports the creation and exposure of prometheus metrics
 6. [mgo.v2](https://gopkg.in/mgo.v2) - Mongo driver for golang
 7. [testify](https://github.com/stretchr/testify) - Toolkit with assertions for unit tests
+
+### Mongo Client
+In order to check the results of the API calls you might be doing there's a mongo-express service deployed on our stack which provides acess to all databases and collections of mongodb by acessing [this link](http://localhost:8888/)
+
+![mongo-express default page](./docs/images/mongo-express.png)
+
+## Prometheus
+There's also a prometheus server deployed on the stack. The service can be accessed on [this link](http://localhost:9090)
+
+![prometheus main page](./docs/images/prometheus.png)
+
+## cAdvisor
+(Container Advisor) provides container users an understanding of the resource usage and performance characteristics of their running containers. It is a running daemon that collects, aggregates, processes, and exports information about running containers. The application can be acessed on [this link](http://localhost:8080/containers/)
+
+![cadvisor main page](./docs/images/cadvisor.png)
+
+
+
