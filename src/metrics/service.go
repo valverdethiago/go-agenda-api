@@ -1,36 +1,39 @@
 package metrics
 
 import (
-	"github.com/prometheus/client_golang/prometheus"
+	"github.com/gin-gonic/gin"
+	"github.com/penglongli/gin-metrics/ginmetrics"
 )
 
-// Service Prometheus Service
-type Service struct {
-	prometheusUrl        string
-	httpRequestHistogram *prometheus.HistogramVec
+// MetricService service to collect metrics
+type MetricService struct {
+	path     string
+	router   *gin.Engine
+	duration []float64
 }
 
-//NewPrometheusService create a new prometheus service
-func NewPrometheusService(prometheusUrl string) (*Service, error) {
-	http := prometheus.NewHistogramVec(prometheus.HistogramOpts{
-		Namespace: "http",
-		Name:      "request_duration_seconds",
-		Help:      "The latency of the HTTP requests.",
-		Buckets:   prometheus.DefBuckets,
-	}, []string{"handler", "method", "code"})
-
-	s := &Service{
-		prometheusUrl:        prometheusUrl,
-		httpRequestHistogram: http,
+// NewMetricService creates a new instance of MetricService
+func NewMetricService(path string, router *gin.Engine) *MetricService {
+	return &MetricService{
+		path:     path,
+		router:   router,
+		duration: []float64{0.1, 0.3, 1.2, 5, 10},
 	}
-	err := prometheus.Register(s.httpRequestHistogram)
-	if err != nil && err.Error() != "duplicate metrics collector registration attempted" {
-		return nil, err
-	}
-	return s, nil
 }
 
-//SaveHTTP send metrics to server
-func (s *Service) SaveHTTP(h *HTTP) {
-	s.httpRequestHistogram.WithLabelValues(h.Handler, h.Method, h.StatusCode).Observe(h.Duration)
+// Configure the Metric Service and start collecting metrics
+func (service *MetricService) Configure() {
+	service.configureMetrics()
+	service.init()
+}
+
+func (service *MetricService) init() {
+	monitor := ginmetrics.GetMonitor()
+	monitor.SetMetricPath(service.path)
+	monitor.SetDuration(service.duration)
+	monitor.Use(service.router)
+}
+
+func (service *MetricService) configureMetrics() {
+
 }

@@ -14,22 +14,17 @@ var database *mgo.Database
 
 func main() {
 	router := gin.Default()
+	metricService := metrics.NewMetricService("/metrics", router)
+	metricService.Configure()
 	config := util.LoadEnvConfig("./.", "app")
 	database = util.ConnectToDatabase(config)
 	store := contact.NewMongoDbStore(database)
 	server := contact.NewServer(store, router, &config)
+
 	err := server.Start(config.ServerAddress)
+
 	if err != nil {
 		log.Fatal("Failed to start HTTP server")
 	}
-	configureMiddleware(config, router)
 
-}
-
-func configureMiddleware(config util.Config, router *gin.Engine) {
-	metricService, err := metrics.NewPrometheusService(config.PrometheusAddress)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-	router.Use(metrics.Metrics(metricService))
 }

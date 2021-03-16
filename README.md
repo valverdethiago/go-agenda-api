@@ -50,7 +50,7 @@ Basic configuration for the application can be found in env folder but it can be
 2. [Viper](https://github.com/spf13/viper) - library to load configuration from files and override them by setting environment variables
 3. [Gin](https://github.com/gin-gonic/gin) - Http library to configure our endpoints and middlewares
 4. [Beforeeach](https://github.com/jknair0/beforeeach) - Support for unit test lifecycle methods (setup and tear down)
-5. [prometheus/client_golang](https://github.com/prometheus/client_golang) - Supports the creation and exposure of prometheus metrics
+5. [go-gin-prometheus](https://github.com/zsais/go-gin-prometheus) - Wrapper to configure prometheus metrics
 6. [mgo.v2](https://gopkg.in/mgo.v2) - Mongo driver for golang
 7. [testify](https://github.com/stretchr/testify) - Toolkit with assertions for unit tests
 
@@ -58,16 +58,5 @@ Basic configuration for the application can be found in env folder but it can be
 In order to check the results of the API calls you might be doing there's a mongo-express service deployed on our stack which provides acess to all databases and collections of mongodb by acessing [this link](http://localhost:8888/)
 
 ![mongo-express default page](./docs/images/mongo-express.png)
-
-## Prometheus
-There's also a prometheus server deployed on the stack. The service can be accessed on [this link](http://localhost:9090)
-
-![prometheus main page](./docs/images/prometheus.png)
-
-## cAdvisor
-(Container Advisor) provides container users an understanding of the resource usage and performance characteristics of their running containers. It is a running daemon that collects, aggregates, processes, and exports information about running containers. The application can be acessed on [this link](http://localhost:8080/containers/)
-
-![cadvisor main page](./docs/images/cadvisor.png)
-
 
 
