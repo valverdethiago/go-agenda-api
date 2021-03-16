@@ -7,12 +7,11 @@ import (
 )
 
 type Config struct {
-	DBServer          string `mapstructure:"DB_SERVER"`
-	DBName            string `mapstructure:"DB_NAME"`
-	ServerAddress     string `mapstructure:"SERVER_ADDRESS"`
-	PrometheusAddress string `mapstructure:"PROMETHEUS_SERVER"`
-	ReadTimeout       int    `mapstructure:"READ_TIMEOUT"`
-	WriteTimeout      int    `mapstructure:"WRITE_TIMEOUT"`
+	DBServer      string `mapstructure:"DB_SERVER"`
+	DBName        string `mapstructure:"DB_NAME"`
+	ServerAddress string `mapstructure:"SERVER_ADDRESS"`
+	ReadTimeout   int    `mapstructure:"READ_TIMEOUT"`
+	WriteTimeout  int    `mapstructure:"WRITE_TIMEOUT"`
 }
 
 func LoadConfig(path string, env string) (Config, error) {
