@@ -17,7 +17,7 @@ func main() {
 	config := util.LoadEnvConfig("./.", "app")
 	database = util.ConnectToDatabase(config)
 	store := contact.NewMongoDbStore(database)
-	server := contact.NewServer(store, router, config)
+	server := contact.NewServer(store, router, &config)
 	err := server.Start(config.ServerAddress)
 	if err != nil {
 		log.Fatal("Failed to start HTTP server")
