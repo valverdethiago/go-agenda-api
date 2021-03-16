@@ -17,3 +17,39 @@ The http server should contain:
 * The application should have end-to-end tests (this is a good way to try out the http client)
 * The application should contain a buildable Dockerfile (https://levelup.gitconnected.com/complete-guide-to-create-docker-container-for-your-golang-application-80f3fb59a15e) -- care on this, as using plainly the scratch image might hinder you from making https requests. Not that this will impact our example, but something to always take care into the future
 * It would be nice for the application to have some type of storage to persist the data. I'll leave this open, feel free to pick any type of storage you want
+
+## Dev environment
+
+In order to execute this project you'll need to setup go env locally (in order to run the source files) and also docker with docker-compose installation
+
+## Makefile
+
+In order to facilitate running the processes locally a makefile with some tasks is available [here](./Makefile).
+
+* make dev-start: starts the database, prometheus and all other required infrastructure containers to run the application locally
+* make dev-stop: stops the local development containter, needed if you want to use the full stack
+* make stack-start: starts all the basic infrastrucute containers and the backend app
+* make stack-stop: stops the full stack
+* make tests: runs the tests with coverage report (actually 93.7%)
+* make mockgen: generates mock for the Store interface to mock database calls
+* make server: starts the application (make dev-start is required to run this task)
+
+## Environment variables
+
+Basic configuration for the application can be found in env folder but it can be override by setting the following environment variables:
+* DB_SERVER - host for the mongo database
+* DB_NAME - database name
+* SERVER_ADDRESS - server address 
+* PROMETHEUS_SERVER - complete link for prometheus server
+* READ_TIMEOUT - application read timeout
+* WRITE_TIMEOUT - application write timeout
+
+## Services, frameworks and libraries
+
+1. [MongoDB](https://www.mongodb.com/) - for this sample we are using mongodb as the application database
+2. [Viper](https://github.com/spf13/viper) - library to load configuration from files and override them by setting environment variables
+3. [Gin](https://github.com/gin-gonic/gin) - Http library to configure our endpoints and middlewares
+4. [Beforeeach](https://github.com/jknair0/beforeeach) - Support for unit test lifecycle methods (setup and tear down)
+5. [prometheus/client_golang](https://github.com/prometheus/client_golang) - Supports the creation and exposure of prometheus metrics
+6. [mgo.v2](https://gopkg.in/mgo.v2) - Mongo driver for golang
+7. [testify](https://github.com/stretchr/testify) - Toolkit with assertions for unit tests
