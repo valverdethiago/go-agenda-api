@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
+	"github.com/valverde.thiago/go-agenda-api/api"
 	"github.com/valverde.thiago/go-agenda-api/contact"
 	"github.com/valverde.thiago/go-agenda-api/metrics"
 	"github.com/valverde.thiago/go-agenda-api/util"
@@ -19,7 +20,7 @@ func main() {
 	config := util.LoadEnvConfig("./.", "app")
 	database = util.ConnectToDatabase(config)
 	store := contact.NewMongoDbStore(database)
-	server := contact.NewServer(store, router, &config)
+	server := api.NewServer(store, router, &config)
 
 	err := server.Start(config.ServerAddress)
 
