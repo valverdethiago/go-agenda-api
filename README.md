@@ -40,7 +40,6 @@ Basic configuration for the application can be found in env folder but it can be
 * DB_SERVER - host for the mongo database
 * DB_NAME - database name
 * SERVER_ADDRESS - server address 
-* PROMETHEUS_SERVER - complete link for prometheus server
 * READ_TIMEOUT - application read timeout
 * WRITE_TIMEOUT - application write timeout
 
