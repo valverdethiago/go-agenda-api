@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"github.com/valverde.thiago/go-agenda-api/random"
 	"gopkg.in/mgo.v2"
 )
 
@@ -20,13 +19,13 @@ func assertSearchResult(t *testing.T, originalContact Contact, contactList []Con
 
 func TestCreateContact(t *testing.T) {
 	it(func() {
-		createRandomContact(t, random.RandomName(), true)
+		createRandomContact(t, randomizer.RandomName(), true)
 	})
 }
 
 func TestGetContact(t *testing.T) {
 	it(func() {
-		contact := createRandomContact(t, random.RandomName(), true)
+		contact := createRandomContact(t, randomizer.RandomName(), true)
 		dbContact, err := testDbStore.FindByID(contact.ID.Hex())
 		require.NoError(t, err)
 		require.NotEmpty(t, dbContact)
@@ -38,11 +37,11 @@ func TestGetContact(t *testing.T) {
 }
 func TestUpdateContact(t *testing.T) {
 	it(func() {
-		contact := createRandomContact(t, random.RandomName(), true)
+		contact := createRandomContact(t, randomizer.RandomName(), true)
 		arg := Contact{
 			ID:     contact.ID,
-			Name:   random.RandomName(),
-			Email:  random.RandomEmail(),
+			Name:   randomizer.RandomName(),
+			Email:  randomizer.RandomEmail(),
 			Active: false,
 		}
 		err := testDbStore.Update(arg)
@@ -58,7 +57,7 @@ func TestUpdateContact(t *testing.T) {
 }
 func TestDeleteteContact(t *testing.T) {
 	it(func() {
-		contact := createRandomContact(t, random.RandomName(), true)
+		contact := createRandomContact(t, randomizer.RandomName(), true)
 		err := testDbStore.Delete(contact.ID.Hex())
 		require.NoError(t, err)
 		dbContact, err := testDbStore.FindByID(contact.ID.Hex())
@@ -70,7 +69,7 @@ func TestDeleteteContact(t *testing.T) {
 func TestGetAll(t *testing.T) {
 	it(func() {
 		size := 10
-		createRandomContactList(t, random.RandomName(), size, true)
+		createRandomContactList(t, randomizer.RandomName(), size, true)
 		dbContacts, err := testDbStore.GetAll()
 		require.NoError(t, err)
 		require.NotEmpty(t, dbContacts)
@@ -80,10 +79,10 @@ func TestGetAll(t *testing.T) {
 
 func TestFindByName(t *testing.T) {
 	it(func() {
-		firstName := random.RandomName()
-		lastName := random.RandomName()
+		firstName := randomizer.RandomName()
+		lastName := randomizer.RandomName()
 		name := fmt.Sprintf("%s %s", firstName, lastName)
-		contact := createRandomContact(t, random.RandomName(), true)
+		contact := createRandomContact(t, randomizer.RandomName(), true)
 		contact.Name = name
 		err := testDbStore.Update(contact)
 		require.NoError(t, err)
