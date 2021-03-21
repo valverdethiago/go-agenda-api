@@ -11,6 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+	"github.com/valverde.thiago/go-agenda-api/api"
 	"gopkg.in/mgo.v2"
 )
 
@@ -348,7 +349,9 @@ func run(t *testing.T, testCases []testCase, method string) {
 			//build stubs
 			testCase.buildStubs(mockStore)
 			// start http server and send the request
-			server := NewServer(mockStore, gin.Default(), &testConfig)
+			server := api.NewServer(gin.Default(), &testConfig)
+			controller := NewController(mockStore)
+			server.ConfigureController(controller)
 			recorder := httptest.NewRecorder()
 			requestObject := testCase.buildRequest()
 			var request *http.Request
@@ -361,7 +364,7 @@ func run(t *testing.T, testCases []testCase, method string) {
 			}
 			require.NoError(t, err)
 
-			server.router.ServeHTTP(recorder, request)
+			server.Router.ServeHTTP(recorder, request)
 			//check response
 			testCase.checkResponse(t, recorder)
 		})
