@@ -20,12 +20,13 @@ import (
 var testConfig config.Config
 var testDbStore Store
 var testDatabase *mgo.Database
+var randomizer = random.NewRandomGenerator()
 
 var it = beforeEach.Create(setUp, tearDown)
 var expectedContact = Contact{
 	ID:     bson.NewObjectId(),
-	Name:   random.RandomName(),
-	Email:  random.RandomEmail(),
+	Name:   randomizer.RandomName(),
+	Email:  randomizer.RandomEmail(),
 	Active: true,
 }
 
@@ -88,8 +89,8 @@ func sendObjectAsRequestBody(t *testing.T, obj interface{}) *bytes.Buffer {
 
 func createRandomContact(t *testing.T, name string, persistData bool) Contact {
 	arg := Contact{
-		Name:   fmt.Sprintf("%s %s %s", random.RandomName(), name, random.RandomName()),
-		Email:  random.RandomEmail(),
+		Name:   fmt.Sprintf("%s %s %s", randomizer.RandomName(), name, randomizer.RandomName()),
+		Email:  randomizer.RandomEmail(),
 		Active: true,
 	}
 	var contact Contact
