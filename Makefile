@@ -10,9 +10,17 @@ stack-start:
 stack-stop:
 	docker-compose -f ./docker/docker-compose-full.yml  down 
 
+unit:
+	cd src;\
+	go test -v -tags=unit -cover ./... 
+
+e2e:
+	cd src;\
+	go test -v -tags=integration -cover ./... 
+
 tests:
 	cd src;\
-	go test -v -cover ./...
+	go test -v -tags=integration,unit -cover ./...
 
 mockgen:
 	cd src;\
@@ -25,4 +33,4 @@ server:
 build:
 	go build -o ./docker/bin/agenda
 
-.PHONY: dev-start dev-stop stack-start stack-stop tests unit-tests e2e server mockgen
+.PHONY: dev-start dev-stop stack-start stack-stop tests unit e2e server mockgen

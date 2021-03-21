@@ -1,3 +1,5 @@
+// +build unit
+
 package contact
 
 import (
@@ -18,18 +20,6 @@ type testCase struct {
 	buildRequest  func() interface{}
 	buildStubs    func(store *MockStore)
 	checkResponse func(t *testing.T, recorder *httptest.ResponseRecorder)
-}
-
-func buildEmptyRequest() interface{} {
-	return nil
-}
-
-func buildDefaultContactRequest() interface{} {
-	return contactRequest{
-		Name:   expectedContact.Name,
-		Email:  expectedContact.Email,
-		Active: true,
-	}
 }
 
 func TestCreateContactEnpoint(t *testing.T) {

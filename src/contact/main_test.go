@@ -121,3 +121,15 @@ func createRandomContactList(t *testing.T, name string, size int, persistData bo
 	}
 	return result
 }
+
+func buildEmptyRequest() interface{} {
+	return nil
+}
+
+func buildDefaultContactRequest() interface{} {
+	return contactRequest{
+		Name:   expectedContact.Name,
+		Email:  expectedContact.Email,
+		Active: true,
+	}
+}
