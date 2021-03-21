@@ -7,18 +7,18 @@ import (
 
 	"github.com/gin-gonic/gin"
 	ginglog "github.com/szuecs/gin-glog"
-	"github.com/valverde.thiago/go-agenda-api/util"
+	"github.com/valverde.thiago/go-agenda-api/config"
 )
 
 // Server server
 type Server struct {
 	store  Store
 	router *gin.Engine
-	config *util.Config
+	config *config.Config
 }
 
 // NewServer creates a new server instance
-func NewServer(store Store, router *gin.Engine, config *util.Config) *Server {
+func NewServer(store Store, router *gin.Engine, config *config.Config) *Server {
 	server := &Server{
 		store:  store,
 		router: router,

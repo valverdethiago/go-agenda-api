@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-	"github.com/valverde.thiago/go-agenda-api/util"
+	"github.com/valverde.thiago/go-agenda-api/random"
 	"gopkg.in/mgo.v2"
 )
 
@@ -81,7 +81,7 @@ func TestCreateContactEnpoint(t *testing.T) {
 }
 func TestListContactsEnpoint(t *testing.T) {
 	path := "/contacts"
-	contactList := createRandomContactList(t, util.RandomName(), 10, false)
+	contactList := createRandomContactList(t, random.RandomName(), 10, false)
 	testCases := []testCase{
 		{
 			name:         "OK",
@@ -130,9 +130,9 @@ func TestListContactsEnpoint(t *testing.T) {
 	run(t, testCases, http.MethodGet)
 }
 func TestSearchContactsEnpoint(t *testing.T) {
-	searchTerm := util.RandomName()
+	searchTerm := random.RandomName()
 	path := fmt.Sprintf("/contacts?term=%s", searchTerm)
-	contactList := createRandomContactList(t, util.RandomName(), 10, false)
+	contactList := createRandomContactList(t, random.RandomName(), 10, false)
 	testCases := []testCase{
 		{
 			name:         "OK",
@@ -182,7 +182,7 @@ func TestSearchContactsEnpoint(t *testing.T) {
 }
 
 func TestGetContactEndpoint(t *testing.T) {
-	contact := createRandomContact(t, util.RandomName(), false)
+	contact := createRandomContact(t, random.RandomName(), false)
 	path := fmt.Sprintf("/contacts/%s", contact.ID.Hex())
 
 	testCases := []testCase{

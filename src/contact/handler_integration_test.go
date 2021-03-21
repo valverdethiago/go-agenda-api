@@ -8,7 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/require"
-	"github.com/valverde.thiago/go-agenda-api/util"
+	"github.com/valverde.thiago/go-agenda-api/random"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -68,7 +68,7 @@ func TestListContactsIntegrationEnpoint(t *testing.T) {
 		{
 			name: "OK",
 			buildSeed: func(store Store) {
-				contactList = createRandomContactList(t, util.RandomName(), 10, true)
+				contactList = createRandomContactList(t, random.RandomName(), 10, true)
 			},
 			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {
 				require.Equal(t, http.StatusOK, recorder.Code)
@@ -106,7 +106,7 @@ func TestListContactsIntegrationEnpoint(t *testing.T) {
 }
 
 func TestSearchContactsIntegrationEnpoint(t *testing.T) {
-	searchTerm := util.RandomName()
+	searchTerm := random.RandomName()
 	path := fmt.Sprintf("/contacts?term=%s", searchTerm)
 	var contactList []Contact
 	testCases := []struct {
@@ -164,7 +164,7 @@ func TestGetContactIntegrationEndpoint(t *testing.T) {
 		{
 			name: "OK",
 			buildSeed: func(store Store) string {
-				contact = createRandomContact(t, util.RandomName(), true)
+				contact = createRandomContact(t, random.RandomName(), true)
 				return fmt.Sprintf("/contacts/%s", contact.ID.Hex())
 			},
 			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {
@@ -174,7 +174,7 @@ func TestGetContactIntegrationEndpoint(t *testing.T) {
 		}, {
 			name: "Not Found",
 			buildSeed: func(store Store) string {
-				contact = createRandomContact(t, util.RandomName(), true)
+				contact = createRandomContact(t, random.RandomName(), true)
 				return fmt.Sprintf("/contacts/%s", bson.NewObjectId().Hex())
 			},
 			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {
@@ -221,7 +221,7 @@ func TestUpdateContactIntegrationEnpoint(t *testing.T) {
 				}
 			},
 			buildSeed: func(store Store) string {
-				contact = createRandomContact(t, util.RandomName(), true)
+				contact = createRandomContact(t, random.RandomName(), true)
 				return fmt.Sprintf("/contacts/%s", contact.ID.Hex())
 			},
 			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {
@@ -235,7 +235,7 @@ func TestUpdateContactIntegrationEnpoint(t *testing.T) {
 				return contactRequest{}
 			},
 			buildSeed: func(store Store) string {
-				contact := createRandomContact(t, util.RandomName(), true)
+				contact := createRandomContact(t, random.RandomName(), true)
 				return fmt.Sprintf("/contacts/%s", contact.ID.Hex())
 			},
 			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {
@@ -275,7 +275,7 @@ func TestDeleteContactIntegrationEnpoint(t *testing.T) {
 			name:         "OK",
 			buildRequest: buildEmptyRequest,
 			buildSeed: func() string {
-				contact := createRandomContact(t, util.RandomName(), true)
+				contact := createRandomContact(t, random.RandomName(), true)
 				return fmt.Sprintf("/contacts/%s", contact.ID.Hex())
 			},
 			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {

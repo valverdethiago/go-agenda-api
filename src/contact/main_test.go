@@ -10,20 +10,22 @@ import (
 
 	beforeEach "github.com/jknair0/beforeeach"
 	"github.com/stretchr/testify/require"
+	"github.com/valverde.thiago/go-agenda-api/config"
+	"github.com/valverde.thiago/go-agenda-api/random"
 	"github.com/valverde.thiago/go-agenda-api/util"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
-var testConfig util.Config
+var testConfig config.Config
 var testDbStore Store
 var testDatabase *mgo.Database
 
 var it = beforeEach.Create(setUp, tearDown)
 var expectedContact = Contact{
 	ID:     bson.NewObjectId(),
-	Name:   util.RandomName(),
-	Email:  util.RandomEmail(),
+	Name:   random.RandomName(),
+	Email:  random.RandomEmail(),
 	Active: true,
 }
 
@@ -86,8 +88,8 @@ func sendObjectAsRequestBody(t *testing.T, obj interface{}) *bytes.Buffer {
 
 func createRandomContact(t *testing.T, name string, persistData bool) Contact {
 	arg := Contact{
-		Name:   fmt.Sprintf("%s %s %s", util.RandomName(), name, util.RandomName()),
-		Email:  util.RandomEmail(),
+		Name:   fmt.Sprintf("%s %s %s", random.RandomName(), name, random.RandomName()),
+		Email:  random.RandomEmail(),
 		Active: true,
 	}
 	var contact Contact
