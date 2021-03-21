@@ -1,4 +1,4 @@
-package contact
+package api
 
 import (
 	"flag"
@@ -12,29 +12,34 @@ import (
 
 // Server server
 type Server struct {
-	store  Store
-	router *gin.Engine
+	Router *gin.Engine
 	config *config.Config
 }
 
+// Controller controller
+type Controller interface {
+	SetupRoutes(router *gin.Engine)
+}
+
 // NewServer creates a new server instance
-func NewServer(store Store, router *gin.Engine, config *config.Config) *Server {
+func NewServer(router *gin.Engine, config *config.Config) *Server {
 	server := &Server{
-		store:  store,
-		router: router,
+		Router: router,
 		config: config,
 	}
-	contactController := NewController(store)
-	contactController.SetupRoutes(server.router)
 	server.ConfigureLogging()
 	return server
+}
+
+func (server *Server) ConfigureController(controller Controller) {
+	controller.SetupRoutes(server.Router)
 }
 
 // ConfigureLogging configure gin logs
 func (server *Server) ConfigureLogging() {
 	flag.Parse()
-	server.router.Use(ginglog.Logger(3 * time.Second))
-	server.router.Use(gin.Recovery())
+	server.Router.Use(ginglog.Logger(3 * time.Second))
+	server.Router.Use(gin.Recovery())
 }
 
 // Start runs the HTTP Server on a specific address
@@ -46,7 +51,7 @@ func (server *Server) Start(address string) error {
 
 	s := &http.Server{
 		Addr:         server.config.ServerAddress,
-		Handler:      server.router,
+		Handler:      server.Router,
 		ReadTimeout:  readTimeout,
 		WriteTimeout: writeTimeout,
 	}

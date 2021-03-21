@@ -10,6 +10,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/require"
+	"github.com/valverde.thiago/go-agenda-api/api"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -44,13 +45,15 @@ func TestCreateContactIntegrationEnpoint(t *testing.T) {
 		t.Run(testCase.name, func(t *testing.T) {
 			it(func() {
 				// start http server and send the request
-				server := NewServer(testDbStore, gin.Default(), &testConfig)
+				server := api.NewServer(gin.Default(), &testConfig)
+				controller := NewController(testDbStore)
+				server.ConfigureController(controller)
 				recorder := httptest.NewRecorder()
 				requestObject := testCase.buildRequest()
 				request, err := http.NewRequest(http.MethodPost, path,
 					sendObjectAsRequestBody(t, requestObject))
 				require.NoError(t, err)
-				server.router.ServeHTTP(recorder, request)
+				server.Router.ServeHTTP(recorder, request)
 				//check response
 				testCase.checkResponse(t, recorder)
 			})
@@ -93,11 +96,13 @@ func TestListContactsIntegrationEnpoint(t *testing.T) {
 				//build seeds
 				testCase.buildSeed(testDbStore)
 				// start http server and send the request
-				server := NewServer(testDbStore, gin.Default(), &testConfig)
+				server := api.NewServer(gin.Default(), &testConfig)
+				controller := NewController(testDbStore)
+				server.ConfigureController(controller)
 				recorder := httptest.NewRecorder()
 				request, err := http.NewRequest(http.MethodGet, path, nil)
 				require.NoError(t, err)
-				server.router.ServeHTTP(recorder, request)
+				server.Router.ServeHTTP(recorder, request)
 				//check response
 				testCase.checkResponse(t, recorder)
 
@@ -142,11 +147,13 @@ func TestSearchContactsIntegrationEnpoint(t *testing.T) {
 				//build seeds
 				testCase.buildSeed(testDbStore)
 				// start http server and send the request
-				server := NewServer(testDbStore, gin.Default(), &testConfig)
+				server := api.NewServer(gin.Default(), &testConfig)
+				controller := NewController(testDbStore)
+				server.ConfigureController(controller)
 				recorder := httptest.NewRecorder()
 				request, err := http.NewRequest(http.MethodGet, path, nil)
 				require.NoError(t, err)
-				server.router.ServeHTTP(recorder, request)
+				server.Router.ServeHTTP(recorder, request)
 				//check response
 				testCase.checkResponse(t, recorder)
 
@@ -190,11 +197,13 @@ func TestGetContactIntegrationEndpoint(t *testing.T) {
 				//build seeds
 				path := testCase.buildSeed(testDbStore)
 				// start http server and send the request
-				server := NewServer(testDbStore, gin.Default(), &testConfig)
+				server := api.NewServer(gin.Default(), &testConfig)
+				controller := NewController(testDbStore)
+				server.ConfigureController(controller)
 				recorder := httptest.NewRecorder()
 				request, err := http.NewRequest(http.MethodGet, path, nil)
 				require.NoError(t, err)
-				server.router.ServeHTTP(recorder, request)
+				server.Router.ServeHTTP(recorder, request)
 				//check response
 				testCase.checkResponse(t, recorder)
 
@@ -251,12 +260,14 @@ func TestUpdateContactIntegrationEnpoint(t *testing.T) {
 				//build seeds
 				path := testCase.buildSeed(testDbStore)
 				// start http server and send the request
-				server := NewServer(testDbStore, gin.Default(), &testConfig)
+				server := api.NewServer(gin.Default(), &testConfig)
+				controller := NewController(testDbStore)
+				server.ConfigureController(controller)
 				recorder := httptest.NewRecorder()
 				request, err := http.NewRequest(http.MethodPut,
 					path, sendObjectAsRequestBody(t, testCase.buildRequest()))
 				require.NoError(t, err)
-				server.router.ServeHTTP(recorder, request)
+				server.Router.ServeHTTP(recorder, request)
 				//check response
 				testCase.checkResponse(t, recorder)
 
@@ -300,12 +311,14 @@ func TestDeleteContactIntegrationEnpoint(t *testing.T) {
 				//build seeds
 				path := testCase.buildSeed()
 				// start http server and send the request
-				server := NewServer(testDbStore, gin.Default(), &testConfig)
+				server := api.NewServer(gin.Default(), &testConfig)
+				controller := NewController(testDbStore)
+				server.ConfigureController(controller)
 				recorder := httptest.NewRecorder()
 				request, err := http.NewRequest(http.MethodDelete,
 					path, nil)
 				require.NoError(t, err)
-				server.router.ServeHTTP(recorder, request)
+				server.Router.ServeHTTP(recorder, request)
 				//check response
 				testCase.checkResponse(t, recorder)
 
